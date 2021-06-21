@@ -1,22 +1,24 @@
+
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ConnectionController!{% endblock %}
+{% block title %}Hello InscriptionController!{% endblock %}
 
 {% block body %}
 <style>
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
-
 <div class="example-wrapper">
-    <h1>Connection</h1>
-    {{reponse}}
+</div>
+<h1>Hello inscription</h1>
+
     <form method="POST">
     <label for="name">Entrer votre login</label>
     <input type="text" name="name" id="name" required />
     <label for="password">Entrer votre mot de passe</label>
     <input type="text" name="password" id="password" required />
-    <input type="submit" value="connection" onClick="connect" />
+    <label for="email">Entrer votre email</label>
+    <input type="email" name="email" id="email" required />
+    <input type="submit" value="connection">
     </form>
-</div>
 {% endblock %}
