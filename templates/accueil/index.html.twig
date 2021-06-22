@@ -1,20 +1,46 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AccueilController!{% endblock %}
+{% block title %}Accueil!{% endblock %}
 
 {% block body %}
 <style>
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    .wrapper {width: 1280px; margin:auto;}
+    .header {background: #FFF;height: 100vh; background-size: cover; background-position: center center; position: relative;}
+    .connect {float: right; list-style: none; margin-top: 30px; font-size: 56px; border: 10px solid #4CAF50; transition-duration: 0.4s; right: 0;}
+    .connect button:hover{background-color: aqua; color: #FFF;}
+    .logo img {width: 400px; float: left; height: auto;}
+    .welcome-text {position: absolute; width: 900px; height: 50px; margin: 5% 20%; text-align: center; color:blue;}
+    .paragraph {position: absolute; width: 800px; height: 50px; margin: 15% 20%; text-align: center; color: red; }
+    .departement {text-align: center; margin: 20% 20%;padding: 55px; border: 1px solid red;font-size:large;}
+    .anne {text-align: center; margin: 10% 20%;}
 </style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/Eleve/www/syllabus/src/Controller/AccueilController.php'|file_link(0) }}">src/Controller/AccueilController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/Eleve/www/syllabus/templates/accueil/index.html.twig'|file_link(0) }}">templates/accueil/index.html.twig</a></code></li>
-    </ul>
+    <div class="wrapper">
+            
+            <div class="logo">
+                <img src="logo.png"/>
+            </div>
+            <ul class="Connect">
+                <a href="http:/localhost:8000/connection">Connexion</a>
+                <a href="http:/localhost:8000/inscription">Inscription</a>
+                
+            </ul>
+        </div>
+    <div class="welcome-text">
+            <h1>Bienvenu a l'acceuil de gestion du syllabus du STI</h1>
+        </div>
+    
+    <div class="departement">
+            <p>STI</p>
+            <ul class="annee">
+                <a href="http:/localhost:8000/STI/3A">3A</a>
+                <a href="http:/localhost:8000/STI/4A">4A</a>
+                <a href="http:/localhost:8000/STI/5A">5A</a>
+            </ul>
+        </div>
+    
 </div>
 {% endblock %}
