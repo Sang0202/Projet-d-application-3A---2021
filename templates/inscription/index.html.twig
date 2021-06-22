@@ -9,11 +9,13 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <h1>Hello Connection</h1>
     <a href="{{path('app_inscription_create')}}"> s'inscrire </a><br />
-    {%for inscrit in inscrits%}
-    {{inscrit.getId}}
-    {{inscrit.getName}} <br />
+    {%for user in users%}
+    {{user.getId}}
+    {{user.getUsername}} 
+    
+    <br />
     {%endfor%}
 </div>
 {% endblock %}

@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\ResponsableAnneRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=ResponsableAnneRepository::class)
+ * @ORM\Entity(repositoryClass=UserRepository::class)
  */
-class ResponsableAnne
+class User
 {
     /**
      * @ORM\Id
@@ -18,19 +18,24 @@ class ResponsableAnne
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=25,unique=true)
+     * @ORM\Column(type="string", length=20)
      */
     private $Username;
 
     /**
-     * @ORM\Column(type="string", length=25)
+     * @ORM\Column(type="string", length=255)
      */
     private $Password;
 
     /**
-     * @ORM\Column(type="string", length=255,unique=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $Email;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $role;
 
     public function getId(): ?int
     {
@@ -72,17 +77,16 @@ class ResponsableAnne
 
         return $this;
     }
-    public function getRoles()
-    {
-        return array('ROLE_USER');
-    }
-    public function getSalt()
-    {
-        
-        return null;
-    }
-    public function eraseCredentials()
-    {
 
+    public function getRole(): ?string
+    {
+        return $this->role;
+    }
+
+    public function setRole(string $role): self
+    {
+        $this->role = $role;
+
+        return $this;
     }
 }
