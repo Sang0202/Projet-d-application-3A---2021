@@ -10,11 +10,10 @@
 
 <div class="example-wrapper">
     <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/Eleve/www/syllabus/src/Controller/InscriptionController.php'|file_link(0) }}">src/Controller/InscriptionController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/Eleve/www/syllabus/templates/inscription/index.html.twig'|file_link(0) }}">templates/inscription/index.html.twig</a></code></li>
-    </ul>
+    <a href="{{path('app_inscription_create')}}"> s'inscrire </a><br />
+    {%for inscrit in inscrits%}
+    {{inscrit.getId}}
+    {{inscrit.getName}} <br />
+    {%endfor%}
 </div>
 {% endblock %}

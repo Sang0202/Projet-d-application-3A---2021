@@ -1,4 +1,3 @@
-
 {% extends 'base.html.twig' %}
 
 {% block title %}Hello InscriptionController!{% endblock %}
@@ -11,14 +10,5 @@
 <div class="example-wrapper">
 </div>
 <h1>Hello inscription</h1>
-
-    <form method="POST">
-    <label for="name">Entrer votre login</label>
-    <input type="text" name="name" id="name" required />
-    <label for="password">Entrer votre mot de passe</label>
-    <input type="text" name="password" id="password" required />
-    <label for="email">Entrer votre email</label>
-    <input type="email" name="email" id="email" required />
-    <input type="submit" value="connection">
-    </form>
+{{form(form)}}
 {% endblock %}

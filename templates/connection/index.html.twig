@@ -11,12 +11,6 @@
 <div class="example-wrapper">
     <h1>Connection</h1>
     {{reponse}}
-    <form method="POST">
-    <label for="name">Entrer votre login</label>
-    <input type="text" name="name" id="name" required />
-    <label for="password">Entrer votre mot de passe</label>
-    <input type="text" name="password" id="password" required />
-    <input type="submit" value="connection" onClick="connect" />
-    </form>
+    {{form(form)}}
 </div>
 {% endblock %}
