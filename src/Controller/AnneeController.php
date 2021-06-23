@@ -67,6 +67,9 @@ class AnneeController extends AbstractController
 
         }
     }
+    public function matiere(){
+
+    }
 
     // /**
     //  * @Route("/main/{semestre}", name="semestre")
