@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class AnneeController extends AbstractController
 {
     /** 
-     * @Route("/{departement}/{annee}", name="departement_annee")
+     * @Route("/main/{departement}/{annee}", name="departement_annee")
      */
 
     public function annee($departement, $annee)
@@ -69,7 +69,7 @@ class AnneeController extends AbstractController
     }
 
     // /**
-    //  * @Route("/{semestre}", name="semestre")
+    //  * @Route("/main/{semestre}", name="semestre")
     //  */
     // public function index(): Response
     // {
