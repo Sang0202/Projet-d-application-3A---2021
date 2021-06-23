@@ -43,7 +43,8 @@ class ConnectionController extends AbstractController
             return $this->render('accueil/index.html.twig', [  
                 'controller_name' => 'AccueilController',         
                 'reponse'=>'Connection reusie',
-                'role_session'=>$session->get('role'),]);
+                'Username'=>$session->get('Username'),
+            ]);
             }
 
             return $this->render('connection/index.html.twig', [
@@ -64,4 +65,15 @@ class ConnectionController extends AbstractController
     public function setMdePasse(): Response
     {
     }
+    /**
+     * @Route("/accueil", name="deconnection", methods={"Post"})
+     */
+    public function logout(): Response
+    {
+        $session=new Session;
+        $session->clear();
+        return $this->render('accueil/index.html.twig',[
+            Username=>'',
+        ]);
+    } 
 }

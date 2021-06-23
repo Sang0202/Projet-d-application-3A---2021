@@ -17,7 +17,7 @@ class AccueilController extends AbstractController
         $session=new Session;
         return $this->render('accueil/index.html.twig', [
             'controller_name' => 'AccueilController',
-            'role_session'=>$session->get('Role'),
+            'Username'=>'',
         ]);
     }
 }

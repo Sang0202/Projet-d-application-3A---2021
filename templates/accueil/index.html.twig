@@ -17,10 +17,19 @@
                 </div>
                 
                 <nav>
-                    <ul>
-                        <li><a href="/connection">Connection</a></li>
-                        <li><a href="/inscription">Inscription</a></li>
+                {%if Username %}
+                <li>
+                    <ul>  
+                        <p>{{Username}}</p>
+                        <a href="{{ path('deconnection') }}">Deconnection</a>
                     </ul>
+                {% else %}
+                    <ul>
+                        <li><a href="{{ path('connection') }}">Connection</a></li>
+                        <li><a href="{{ path("app_inscription_create") }}">Inscription</a></li>
+                    </ul>
+                {% endif %}
+                </li>
                 </nav>
             </header>
             
@@ -29,13 +38,6 @@
                     Vous voulez devenir ingénieur? 
                     <a href="#" class="bouton_rouge">Savoir Plus > <img src="" alt="" /></a>
                 </div>
-            </div>
-            <ul class="Connect">
-                <a href="{{ path('connection') }}">Connexion</a>
-                <a href="{{ path('inscription') }}">Inscription</a>
-                
-            </ul>
-        </div>
     <div class="welcome-text">
             <h1>Bienvenu a l'acceuil de gestion du syllabus du STI</h1>
         </div>
