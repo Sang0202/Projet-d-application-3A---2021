@@ -16,7 +16,7 @@
             <h2> {{key}}</h2>
             <ul>
                 {% for module in value %}
-                    <li>UE {{module}} </li>
+                    <li><a href="{{path('matiere',{annee:annee,departement:departement,semestre:key,module:module})}}">{{module}} </a> </li>
                 {% endfor%}
             </ul>
         {% endfor %}

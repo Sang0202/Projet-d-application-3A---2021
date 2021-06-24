@@ -20,11 +20,11 @@
         <tbody>
 {%for matiere in matieres%}
     <tr>
-    <td>{{matiere.getName}}</td>
-    <td>{{matiere.getDepartement}}</td>
-    <td>{{matiere.getAnnee}}</td>
-    <td>{{matiere.getModule}}</td>
-    <td>{{matiere.getSemestre}}</td>
+    <td><pre>{{matiere.getName}}</pre></td>
+    <td><pre>{{matiere.getDepartement}}</pre></td>
+    <td><pre>{{matiere.getAnnee}}</pre></td>
+    <td><pre>{{matiere.getModule}}</pre></td>
+    <td><pre>{{matiere.getSemestre}}</pre></td>
     <td><a href="{{path('matiere_edit',{annee:annee,departement:departement,semestre:semestre,module:module,'id':matiere.id})}}"> modifer </a></td>
     <td><a href="{{path('matiere_show',{annee:annee,departement:departement,semestre:semestre,module:module,'id':matiere.id})}}"> détail </a></td>
     </tr>

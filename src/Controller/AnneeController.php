@@ -48,8 +48,8 @@ class AnneeController extends AbstractController
                 $modules[$semestres[$i]] = $modulesSem;
             }
 
-
-            return $this->render('annee/annee.html.twig', [
+        // d($modules);
+            return $this->render('main/annee/annee.html.twig', [
                                         'departement' => $departement,
                                         'annee' => $annee,
                                         'semestres' => $semestres,
