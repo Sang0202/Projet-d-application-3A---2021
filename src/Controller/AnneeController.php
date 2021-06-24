@@ -1,11 +1,15 @@
 <?php
 
 namespace App\Controller;
-
+use App\Entity\Matiere;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 class AnneeController extends AbstractController
 {
     /** 
@@ -35,7 +39,7 @@ class AnneeController extends AbstractController
                                 'Humainites 6'
                             )
                         );
-                        return $this->render('annee/annee.html.twig', [
+                        return $this->render('main/annee/annee.html.twig', [
                             'departement' => $departement,
                             'annee' => $annee,
                             'semestres' => $semestres,
@@ -67,18 +71,124 @@ class AnneeController extends AbstractController
 
         }
     }
-    public function matiere(){
-
+    /**
+     * @Route("/main/{departement}/{annee}/{semestre}/{module}", name="matiere", methods={"GET","POST"})
+     */
+    public function matiere(EntityManagerInterface $em,$annee,$module,$semestre,$departement):Response{
+        $matiere=new Matiere;
+         $repo=$em->getRepository(Matiere::class);
+         $matiere=$repo->findBy(['module'=>$module]);
+         return $this->render('main/matiere/liste.html.twig', [
+            'matieres'=> $matiere,
+            'annee'=>$annee,
+            'semestre'=>$semestre,
+            'module'=>$module,
+            'departement'=>$departement
+         ]);
+        return new Response('valider');
+    }
+    /**
+     * @Route("/main/{departement}/{annee}/{semestre}/{module}/{id}/delete", name="matiere_delete", methods={"GET","POST"})
+     */
+    public function delete(Request $request,EntityManagerInterface $em,Matiere $matiere): Response
+    {   
+        $annee=$matiere->getAnnee();
+        $semestre=$matiere->getSemestre();
+        $departement=$matiere->getDepartement();
+        $module=$matiere->getModule();
+        $em->remove($matiere);
+        $em->flush();
+        return $this->redirect($this->generateUrl('matiere', ['annee'=>$annee,'semestre'=>$semestre,'module'=>$module,'departement'=>$departement] ));
+    }
+    /**
+     * @Route("/main/{departement}/{annee}/{semestre}/{module}/create", name="matiere_create", methods={"GET","POST"})
+     */
+    public function create(Request $request,EntityManagerInterface $em,$annee,$module,$departement,$semestre):Response
+    {
+        $form=$this->createFormBuilder()
+            ->add('name',TextType::class)
+            ->add('annee',TextType::class,['data'=>$annee])
+            ->add('departement',TextType::class,['data'=>$departement])
+            ->add('semestre',TextType::class,['data'=>$semestre])
+            ->add('module',TextType::class,['data'=>$module])
+            ->add('introduction',TextareaType::class,['required'=>false])
+            ->add('contenu',TextareaType::class,['required'=>false])
+            ->add('prerequis',TextareaType::class,['required'=>false])
+            ->add('submit',SubmitType::class, ['label'=>"ajouter matiere"])
+            ->getForm()
+        ;
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()){
+            $data=$form->getData();
+            $matiere=new Matiere;
+            $matiere->setName($data["name"]);
+            $matiere->setAnnee($data["annee"]);
+            $matiere->setDepartement($data["departement"]);
+            $matiere->setSemestre($data["semestre"]);
+            $matiere->setModule($data["module"]);
+            $matiere->setIntroduction($data["introduction"]);
+            $matiere->setContenu($data["contenu"]);
+            $matiere->setPrerequis($data["prerequis"]);
+            $em->persist($matiere);
+            $em->flush();
+            return $this->redirect($this->generateUrl('matiere', ['annee'=>$data["annee"],'semestre'=>$data["semestre"],'module'=>$data["module"],'departement'=>$data["departement"]]));
+       }
+       return $this->render('main/matiere/create.html.twig',
+        ['form'=>$form->createView(),
+            ]);
     }
 
-    // /**
-    //  * @Route("/main/{semestre}", name="semestre")
-    //  */
-    // public function index(): Response
-    // {
+    /**
+     * @Route("/main/{departement}/{annee}/{semestre}/{module}/{id}/edit", name="matiere_edit", methods={"GET","POST"})
+     */
+    public function edit(Request $request,EntityManagerInterface $em,$annee,$module,$semestre,$departement,$id,Matiere $matiere):Response{
+        $form = $this->createFormBuilder()
+        ->add('name',TextType::class,['data'=>$matiere->getName()])
+            ->add('annee',TextType::class,['data'=>$matiere->getAnnee()])
+            ->add('departement',TextType::class,['data'=>$matiere->getDepartement()])
+            ->add('semestre',TextType::class,['data'=>$matiere->getSemestre()])
+            ->add('module',TextType::class,['data'=>$matiere->getModule()])
+            ->add('introduction',TextareaType::class,['data'=>$matiere->getIntroduction(),'required'=>false])
+            ->add('contenu',TextareaType::class,['data'=>$matiere->getContenu(),'required'=>false])
+            ->add('prerequis',TextareaType::class,['data'=>$matiere->getPrerequis(),'required'=>false])
+            ->add('submit',SubmitType::class, ['label'=>"modifier matiere"])
+            ->getForm()
+        ;
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()){
+            $data=$form->getData();
+            $matiere->setName($data["name"]);
+            $matiere->setAnnee($data["annee"]);
+            $matiere->setDepartement($data["departement"]);
+            $matiere->setSemestre($data["semestre"]);
+            $matiere->setModule($data["module"]);
+            $matiere->setIntroduction($data["introduction"]);
+            $matiere->setContenu($data["contenu"]);
+            $matiere->setPrerequis($data["prerequis"]);
+            $em->persist($matiere);
+            $em->flush();
+            return $this->redirectToRoute('matiere');
+        }
 
-    //     return $this->render('semestre/index.html.twig', [
-    //         'controller_name' => 'SemestreController',
-    //     ]);
-    // }
+        return $this->render('main/matiere/edit.html.twig',
+            ['form'=>$form->createView(),
+                'matiere'=>$matiere,
+                'annee'=>$annee,
+                'semestre'=>$semestre,
+                'module'=>$module,
+                'departement'=>$departement
+                ]);
+    }
+    /**
+     * @Route("/main/{departement}/{annee}/{semestre}/{module}/{id}/show", name="matiere_show", methods={"GET","POST"})
+     */
+    public function show(Request $request,EntityManagerInterface $em,$annee,$module,$semestre,$departement,$id,Matiere $matiere):Response{
+        return $this->render('main/matiere/show.html.twig',[
+           'matiere'=>$matiere,
+           'annee'=>$annee,
+            'semestre'=>$semestre,
+            'module'=>$module,
+            'departement'=>$departement
+        ]);
+    }
 }

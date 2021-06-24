@@ -98,12 +98,12 @@ class Matiere
         return $this;
     }
 
-    public function getSemestre(): ?int
+    public function getSemestre(): ?string
     {
         return $this->semestre;
     }
 
-    public function setSemestre(int $semestre): self
+    public function setSemestre(string $semestre): self
     {
         $this->semestre = $semestre;
 
@@ -127,7 +127,7 @@ class Matiere
         return $this->contenu;
     }
 
-    public function setContenu(string $contenu): self
+    public function setContenu(?string $contenu): self
     {
         $this->contenu = $contenu;
 

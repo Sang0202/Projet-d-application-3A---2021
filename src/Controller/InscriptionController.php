@@ -36,7 +36,7 @@ class InscriptionController extends AbstractController
             'users'=> $User,
         ]);
         }else{
-            return $this->redirectToRoute('connection');
+            return $this->redirectToRoute('accueil');
         }
         
     }
