@@ -167,7 +167,7 @@ class AnneeController extends AbstractController
             $matiere->setPrerequis($data["prerequis"]);
             $em->persist($matiere);
             $em->flush();
-            return $this->redirectToRoute('matiere');
+            return $this->redirect($this->generateUrl('matiere', ['annee'=>$data["annee"],'semestre'=>$data["semestre"],'module'=>$data["module"],'departement'=>$data["departement"]]));
         }
 
         return $this->render('main/matiere/edit.html.twig',
