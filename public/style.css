@@ -185,12 +185,6 @@ article
     flex: 3;
 }
 
-.ico_categorie
-{
-    vertical-align: middle;
-    margin-right: 8px;
-}
-
 article p
 {
     font-size: 0.8em;
@@ -208,12 +202,6 @@ aside
     font-size: 0.9em;
 }
 
-#fleche_bulle
-{
-    position: absolute;
-    top: 100px;
-    left: -12px;
-}
 
 #photo_syllabus
 {
@@ -230,6 +218,49 @@ aside img
     margin-right: 5px;
 }
 
+.annee {
+display: inline-block;
+ background-color: #FFFFFF;
+    border-radius: 10px;
+    border: 4px double #cccccc;
+    color: black ;
+    text-align: center;
+    font-size: 27px;
+    padding: 15px;
+    width: 600px;
+-webkit-transition: all 0.5s;
+-moz-transition: all 0.5s;
+-o-transition: all 0.5s;
+transition: all 0.5s;
+cursor: pointer;
+margin: 5px;
+}
+.filiere {
+    display: inline-block;
+    background-color: black;
+    border-radius: 45px;
+    border: -2px double #cccccc;
+    color: #eeeeee;
+    text-align: center;
+    font-size: 28px;
+    padding: 20px;
+    width: 145px;
+-webkit-transition: all 0.5s;
+-moz-transition: all 0.5s;
+-o-transition: all 0.5s;
+transition: all 0.5s;
+cursor: pointer;
+margin: 5px;
+}
+
+a
+{
+    color: white ;
+}
+
+#row {
+    color: black ;
+}
 /* Footer */
 
 footer
@@ -263,7 +294,7 @@ footer h1
         font-family: Dayrom, serif;
    padding: 58px;
 }
- }
+ 
 
 #contact
 {
@@ -276,66 +307,54 @@ footer h1
     padding: 49px;
 }
 
-#mes_amis
-{
-    width: 31%;
+/*Connexion */ 
+#container{
+    width:400px;
+    margin:0 auto;
+    margin-top:10%;
+}
+/* Bordered form */
+form {
+    width:100%;
+    padding: 30px;
+    border: 1px solid #f1f1f1;
+    background: #fff;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    margin-bottom: 125px;
+}
+#container h1{
+    width: 38%;
+    margin: 0 auto;
+    padding-bottom: 10px;
 }
 
-#mes_photos img
-{
-    border: 1px solid #181818;
-    margin-right: 2px;
-}
-
-#listes_amis
-{
-    display: flex;
-    justify-content: space-between;
-    margin-top: 0;
-}
-
-#mes_amis ul
-{
-    list-style-image: url('images/ico_liensexterne.png');
-    padding-left: 2px;
-}
-
-#mes_amis a
-{
-    text-decoration: none;
-    color: #760001;
-}
-#annee {
-display: inline-block;
- background-color: #FFFFFF;
-    border-radius: 10px;
-    border: 4px double #cccccc;
-    color: BLACK;
-    text-align: center;
-    font-size: 27px;
-    padding: 15px;
-    width: 600px;
--webkit-transition: all 0.5s;
--moz-transition: all 0.5s;
--o-transition: all 0.5s;
-transition: all 0.5s;
-cursor: pointer;
-margin: 5px;
-}
-#filiere {
+/* Full-width inputs */
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
     display: inline-block;
-    background-color: black;
-    border-radius: 45px;
-    border: -2px double #cccccc;
-    color: #eeeeee;
-    text-align: center;
-    font-size: 28px;
-    padding: 20px;
-    width: 175px;
--webkit-transition: all 0.5s;
--moz-transition: all 0.5s;
--o-transition: all 0.5s;
-transition: all 0.5s;
-cursor: pointer;
-margin: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
 }
+
+/* Set a style for all buttons */
+input[type=submit] {
+    background-color: #e1c419;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+input[type=submit]:hover {
+    background-color: white;
+    color: #e1c419;
+    border: 1px solid #e1c419;
+}
+
+
+
+
+
