@@ -24,7 +24,7 @@ class AnneeController extends AbstractController
 
         $repo = $em->getRepository(Matiere::class);
         // $matiere = new Matiere;
-        $matieres = $repo->findBy(['annee' => $annee, 'departement' => $departement],['semestre']);
+        $matieres = $repo->findBy(['annee' => $annee, 'departement' => $departement],['semestre' => 'DESC']);
         $semestres = [];
         $new = '';
         $modules = [];
