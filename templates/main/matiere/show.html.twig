@@ -22,14 +22,14 @@
         </thead>
         <tbody>
     <tr>
-    <td>{{matiere.getName}}</td>
-    <td>{{matiere.getDepartement}}</td>
-    <td>{{matiere.getAnnee}}</td>
-    <td>{{matiere.getModule}}</td>
-    <td>{{matiere.getSemestre}}</td>
-    <td>{{matiere.getIntroduction}}</td>
-    <td>{{matiere.getPrerequis}}</td>
-    <td>{{matiere.getContenu}}</td>
+    <td><pre>{{matiere.getName}}</pre></td>
+    <td><pre>{{matiere.getDepartement}}</pre></td>
+    <td><pre>{{matiere.getAnnee}}</pre></td>
+    <td><pre>{{matiere.getModule}}</pre></td>
+    <td><pre>{{matiere.getSemestre}}</pre></td>
+    <td><pre>{{matiere.getIntroduction}}</pre></td>
+    <td><pre>{{matiere.getPrerequis}}</pre></td>
+    <td><pre>{{matiere.getContenu}}</pre></td>
     <td><a href="{{path('matiere_edit',{annee:annee,departement:departement,semestre:semestre,module:module,'id':matiere.id})}}"> modifer </a></td>
     <td><a href="{{path('matiere_delete',{annee:annee,departement:departement,semestre:semestre,module:module,'id':matiere.id})}}"> surprimer </a></td>
     </tr>

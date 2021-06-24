@@ -189,7 +189,12 @@ article p
 {
     font-size: 0.8em;
 }
-
+a:link {
+    color: black;
+}
+a:visited {
+    color: black;
+}
 aside
 {
     flex: 1.2;
@@ -237,7 +242,7 @@ margin: 5px;
 }
 .filiere {
     display: inline-block;
-    background-color: black;
+    background-color: green;
     border-radius: 45px;
     border: -2px double #cccccc;
     color: #eeeeee;
