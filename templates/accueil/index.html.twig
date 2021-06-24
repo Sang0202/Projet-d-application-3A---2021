@@ -20,7 +20,8 @@
                 {%if Username %}
                 <li>
                     <ul>  
-                        <p>{{Username}}</p>
+                        <p>{{Username}}  {{role}}</p>
+                        <p></p>
                         <a href="{{ path('deconnection') }}">Deconnection</a>
                     </ul>
                 {% else %}
