@@ -31,8 +31,8 @@ class AnneeController extends AbstractController
         if ($matieres){
             // find all semestre of this annee +  departement
             for ($i = 0; $i<count($matieres); $i++){
-                if ($matieres[$i].getSemestre() != $new) {
-                    $new = $matieres[$i].getSemestre();
+                if ($matieres[$i]->getSemestre() != $new) {
+                    $new = $matieres[$i]->getSemestre();
                     array_push($semestres, $new);
                 }
             }
@@ -41,7 +41,7 @@ class AnneeController extends AbstractController
                 $modulesSem = array();
                 $module = $repo->findBy(['annee' => $annee, 'departement' => $departement,'semestre' => $semestres[$i]]);
                 for ($j = 0; $j < count($module); $j++) {
-                    array_push($modulesSem, $module[$j].getModule());
+                    array_push($modulesSem, $module[$j]->getModule());
                 }
                 $modules[$semestres[$i]] = $modulesSem;
             }

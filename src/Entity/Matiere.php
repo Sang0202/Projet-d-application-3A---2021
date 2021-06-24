@@ -98,7 +98,7 @@ class Matiere
         return $this;
     }
 
-    public function getSemestre(): ?int
+    public function getSemestre(): ?string
     {
         return $this->semestre;
     }
