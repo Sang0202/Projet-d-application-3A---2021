@@ -37,6 +37,21 @@ class User
      */
     private $role;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $departement;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $annee;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $idEnseignant;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +101,42 @@ class User
     public function setRole(string $role): self
     {
         $this->role = $role;
+
+        return $this;
+    }
+
+    public function getDepartement(): ?string
+    {
+        return $this->departement;
+    }
+
+    public function setDepartement(?string $departement): self
+    {
+        $this->departement = $departement;
+
+        return $this;
+    }
+
+    public function getAnnee(): ?string
+    {
+        return $this->annee;
+    }
+
+    public function setAnnee(?string $annee): self
+    {
+        $this->annee = $annee;
+
+        return $this;
+    }
+
+    public function getIdEnseignant(): ?int
+    {
+        return $this->idEnseignant;
+    }
+
+    public function setIdEnseignant(int $idEnseignant): self
+    {
+        $this->idEnseignant = $idEnseignant;
 
         return $this;
     }

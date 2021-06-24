@@ -10,6 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Validator\Constraints\Length;
 
 class AnneeController extends AbstractController
@@ -48,7 +49,6 @@ class AnneeController extends AbstractController
                 $modules[$semestres[$i]] = $modulesSem;
             }
 
-        // d($modules);
             return $this->render('main/annee/annee.html.twig', [
                                         'departement' => $departement,
                                         'annee' => $annee,
@@ -114,7 +114,7 @@ class AnneeController extends AbstractController
     public function matiere(EntityManagerInterface $em,$annee,$module,$semestre,$departement):Response{
         $matiere=new Matiere;
          $repo=$em->getRepository(Matiere::class);
-         $matiere=$repo->findBy(['module'=>$module]);
+         $matiere=$repo->findBy(['module'=>$module,'annee'=>$annee,'semestre'=>$semestre,'departement'=>$departement]);
          return $this->render('main/matiere/liste.html.twig', [
             'matieres'=> $matiere,
             'annee'=>$annee,
@@ -129,6 +129,8 @@ class AnneeController extends AbstractController
      */
     public function delete(Request $request,EntityManagerInterface $em,Matiere $matiere): Response
     {   
+        $session=new Session;
+        if($session->get('role')=="admin"){
         $annee=$matiere->getAnnee();
         $semestre=$matiere->getSemestre();
         $departement=$matiere->getDepartement();
@@ -136,6 +138,9 @@ class AnneeController extends AbstractController
         $em->remove($matiere);
         $em->flush();
         return $this->redirect($this->generateUrl('matiere', ['annee'=>$annee,'semestre'=>$semestre,'module'=>$module,'departement'=>$departement] ));
+        }else{
+            return $this->redirectToRoute('accueil');
+        }
     }
     /**
      * @Route("/main/{departement}/{annee}/{semestre}/{module}/create", name="matiere_create", methods={"GET","POST"})

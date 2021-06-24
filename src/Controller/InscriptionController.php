@@ -50,7 +50,7 @@ class InscriptionController extends AbstractController
             ->add('password',PasswordType::class)
             ->add('email',EmailType::class)
             ->add('role',ChoiceType::class,[
-                'choices'=>['admin'=>'admin','Responsable Annee'=>'Responsable Annee','Reponsable Module'=>'Responsable Module']
+                'choices'=>['admin'=>'admin','Responsable Annee'=>'Responsable Annee','Reponsable Module'=>'Responsable Module','enseignant'=>'enseignant']
             ])
             ->add('submit',SubmitType::class, ['label'=>"s'inscrire"])
             ->getForm()

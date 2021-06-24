@@ -44,6 +44,7 @@ class ConnectionController extends AbstractController
                 'controller_name' => 'AccueilController',         
                 'reponse'=>'Connection reusie',
                 'Username'=>$session->get('Username'),
+                'role'=>$session->get('role'),
             ]);
             }
 
@@ -59,12 +60,6 @@ class ConnectionController extends AbstractController
         ]);    
         
     }
-     /**
-     * @Route("/connection", methods={"Post"})
-     */
-    public function setMdePasse(): Response
-    {
-    }
     /**
      * @Route("/accueil", name="deconnection", methods={"Post"})
      */
@@ -73,7 +68,7 @@ class ConnectionController extends AbstractController
         $session=new Session;
         $session->clear();
         return $this->render('accueil/index.html.twig',[
-            Username=>'',
+           'Username'=>'',
         ]);
     } 
 }
