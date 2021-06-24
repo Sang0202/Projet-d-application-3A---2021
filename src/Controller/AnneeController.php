@@ -165,13 +165,14 @@ class AnneeController extends AbstractController
             $data=$form->getData();
             $matiere=new Matiere;
             $matiere->setName($data["name"]);
-            $matiere->setAnnee($data["annee"]);
             $matiere->setDepartement($data["departement"]);
+            $matiere->setAnnee($data["annee"]);
             $matiere->setSemestre($data["semestre"]);
             $matiere->setModule($data["module"]);
             $matiere->setIntroduction($data["introduction"]);
             $matiere->setContenu($data["contenu"]);
             $matiere->setPrerequis($data["prerequis"]);
+
             $em->persist($matiere);
             $em->flush();
             return $this->redirect($this->generateUrl('matiere', ['annee'=>$data["annee"],'semestre'=>$data["semestre"],'module'=>$data["module"],'departement'=>$data["departement"]]));
@@ -200,11 +201,15 @@ class AnneeController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
             $data=$form->getData();
+            //admin
             $matiere->setName($data["name"]);
             $matiere->setAnnee($data["annee"]);
             $matiere->setDepartement($data["departement"]);
+            //responsableAnnee(tout dans ! condition departement annee)
+            //responsableOption(tout dans ! condition departement annee=option;)
             $matiere->setSemestre($data["semestre"]);
             $matiere->setModule($data["module"]);
+            //enseignant{
             $matiere->setIntroduction($data["introduction"]);
             $matiere->setContenu($data["contenu"]);
             $matiere->setPrerequis($data["prerequis"]);
