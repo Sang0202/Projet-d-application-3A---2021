@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Controller;
+
+use App\Entity\Inscrit;
 use App\Entity\User;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,12 +30,15 @@ class InscriptionController extends AbstractController
     {
         $User=new User;
         $repo=$em->getRepository(User::class);
+        $repoInscrit=$em->getRepository(Inscrit::class);
         $session=new Session;
         if($session->get('role')=="admin"){
             $User=$repo->findAll();
+            $Inscrits=$repoInscrit->findAll();
             return $this->render('inscription/index.html.twig', [
             'controller_name' => 'InscriptionController',
             'users'=> $User,
+            'inscrits'=> $Inscrits,
         ]);
         }else{
             return $this->redirectToRoute('accueil');
@@ -46,12 +51,15 @@ class InscriptionController extends AbstractController
     public function create(Request $request,EntityManagerInterface $em):Response
     {
         $form=$this->createFormBuilder()
-            ->add('name',TextType::class,['required'=>true])
+            ->add('username',TextType::class,['required'=>true])
             ->add('password',PasswordType::class)
             ->add('email',EmailType::class)
             ->add('role',ChoiceType::class,[
                 'choices'=>['Administrateur'=>'Administrateur','Responsable Annee'=>'Responsable Annee','Reponsable Option'=>'Responsable Option','Enseignant'=>'Enseignant']
             ])
+            ->add('departement',TextType::class)
+            ->add('annee_option',TextType::class)
+            ->add('idEnseignant',TextType::class)
             ->add('submit',SubmitType::class, ['label'=>"s'inscrire"])
             ->getForm()
         ;
@@ -59,14 +67,19 @@ class InscriptionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()){
             $data=$form->getData();
             //$em->getRepository(User::class);
-            $User=new User;
-            $User->setUsername($data['name']);
-            $User->setPassword($data['password']);
-            $User->setEmail($data['email']);
-            $User->setRole($data['role']);
-            $em->persist($User);
+            $inscrit=new Inscrit;
+            $inscrit->setUsername($data['username']);
+            $inscrit->setPassword($data['password']);
+            $inscrit->setEmail($data['email']);
+            $inscrit->setRole($data['role']);
+            $inscrit->setDepartement($data['departement']);
+            $inscrit->setAnnee($data['annee_option']);
+            $inscrit->setIdEnseignant($data['idEnseignant']);
+
+
+            $em->persist($inscrit);
             $em->flush();
-            return $this->redirectToRoute('connection');    
+            return new Response('Veuillez attendre que l\'administrateur confirme votre demande');    
         }
         return $this->render('inscription/create.html.twig',
         ['form'=>$form->createView(),
@@ -102,6 +115,29 @@ class InscriptionController extends AbstractController
                 'user'=>$user
                 ]);
     }
+
+/**
+     * @Route("inscrit/{id}/valider", name="app_inscrit_valider", methods={"GET","POST"})
+     */
+    public function inscritValider(Request $request,EntityManagerInterface $em,Inscrit $inscrit): Response
+    {   
+        $User=new User;
+        $User->setUsername($inscrit->getUsername());
+        $User->setPassword($inscrit->getPassword());
+        $User->setEmail($inscrit->getEmail());
+        $User->setDepartement($inscrit->getDepartement());
+        $User->setAnnee($inscrit->getAnnee());
+        $User->setIdEnseignant($inscrit->getIdEnseignant());
+        $User->setRole($inscrit->getRole());
+        $em->persist($User);
+        $em->remove($inscrit);
+        $em->flush();
+        
+        // send email
+        
+        return $this->redirectToRoute('inscription');
+    }
+
     /**
      * @Route("inscription/{id}/delete", name="app_inscription_delete", methods={"GET","POST"})
      */
@@ -109,6 +145,18 @@ class InscriptionController extends AbstractController
     {
         $em->remove($user);
         $em->flush();
+        return $this->redirectToRoute('inscription');
+    }
+
+    /**
+     * @Route("inscrit/{id}/delete", name="app_inscrit_delete", methods={"GET","POST"})
+     */
+    public function inscritDelete(Request $request,EntityManagerInterface $em,Inscrit $inscrit): Response
+    {
+        $em->remove($inscrit);
+        $em->flush();
+        // send email
+
         return $this->redirectToRoute('inscription');
     }
 }
