@@ -58,7 +58,7 @@ class InscriptionController extends AbstractController
                 'choices'=>['admin'=>'admin','Responsable Annee'=>'Responsable Annee','Reponsable Module'=>'Responsable Module','enseignant'=>'enseignant']
             ])
             ->add('departement',TextType::class)
-            ->add('annee/option',TextType::class)
+            ->add('annee_option',TextType::class)
             ->add('idEnseignant',TextType::class)
             ->add('submit',SubmitType::class, ['label'=>"s'inscrire"])
             ->getForm()
@@ -73,7 +73,7 @@ class InscriptionController extends AbstractController
             $inscrit->setEmail($data['email']);
             $inscrit->setRole($data['role']);
             $inscrit->setDepartement($data['departement']);
-            $inscrit->setAnnee($data['annee/option']);
+            $inscrit->setAnnee($data['annee_option']);
             $inscrit->setIdEnseignant($data['idEnseignant']);
 
 
@@ -124,11 +124,11 @@ class InscriptionController extends AbstractController
         $User=new User;
         $User->setUsername($inscrit->getUsername());
         $User->setPassword($inscrit->getPassword());
-        $User->setEmail($inscrit->setEmail());
+        $User->setEmail($inscrit->getEmail());
         $User->setDepartement($inscrit->getDepartement());
         $User->setAnnee($inscrit->getAnnee());
         $User->setIdEnseignant($inscrit->getIdEnseignant());
-        $User->setRole($inscrit->getRole);
+        $User->setRole($inscrit->getRole());
         $em->persist($User);
         $em->remove($inscrit);
         $em->flush();
