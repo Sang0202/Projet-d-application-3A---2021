@@ -6,6 +6,7 @@ use App\Entity\Inscrit;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+//FIXME: Supprimer
 /**
  * @method Inscrit|null find($id, $lockMode = null, $lockVersion = null)
  * @method Inscrit|null findOneBy(array $criteria, array $orderBy = null)

@@ -4,7 +4,8 @@ namespace App\Entity;
 
 use App\Repository\InscritRepository;
 use Doctrine\ORM\Mapping as ORM;
-
+//TODO:Ajouter les nouvelles classe;
+//FIXME:Supprimer cette classe;
 /**
  * @ORM\Entity(repositoryClass=InscritRepository::class)
  */

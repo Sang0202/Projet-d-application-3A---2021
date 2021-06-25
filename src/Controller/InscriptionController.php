@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-
+//FIXME: modifier les atributs correspondants;
 class InscriptionController extends AbstractController
 {
     
