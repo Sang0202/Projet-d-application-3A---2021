@@ -130,16 +130,16 @@ class AnneeController extends AbstractController
     public function delete(Request $request,EntityManagerInterface $em,Matiere $matiere): Response
     {   
         $session=new Session;
-        if($session->get('role')=="admin"){
-        $annee=$matiere->getAnnee();
-        $semestre=$matiere->getSemestre();
-        $departement=$matiere->getDepartement();
-        $module=$matiere->getModule();
-        $em->remove($matiere);
-        $em->flush();
+        if($session->get('role')=="Administrateur"){
+            $annee=$matiere->getAnnee();
+            $semestre=$matiere->getSemestre();
+            $departement=$matiere->getDepartement();
+            $module=$matiere->getModule();
+            $em->remove($matiere);
+            $em->flush();
         return $this->redirect($this->generateUrl('matiere', ['annee'=>$annee,'semestre'=>$semestre,'module'=>$module,'departement'=>$departement] ));
         }else{
-            return $this->redirectToRoute('accueil');
+            return $this->redirect($this->generateUrl('matiere', ['annee'=>$annee,'semestre'=>$semestre,'module'=>$module,'departement'=>$departement]));
         }
     }
     /**
@@ -163,21 +163,72 @@ class AnneeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()){
             $data=$form->getData();
             $matiere=new Matiere;
-            $matiere->setName($data["name"]);
-            $matiere->setDepartement($data["departement"]);
-            $matiere->setAnnee($data["annee"]);
-            $matiere->setSemestre($data["semestre"]);
-            $matiere->setModule($data["module"]);
-            $matiere->setIntroduction($data["introduction"]);
-            $matiere->setContenu($data["contenu"]);
-            $matiere->setPrerequis($data["prerequis"]);
-
-            $em->persist($matiere);
-            $em->flush();
-            return $this->redirect($this->generateUrl('matiere', ['annee'=>$data["annee"],'semestre'=>$data["semestre"],'module'=>$data["module"],'departement'=>$data["departement"]]));
-       }
-       return $this->render('main/matiere/create.html.twig',
+            $session=new Session;
+            if($session->has('role')){
+                if($session->get('role')=="Administrateur"){
+                    $matiere->setDepartement($data["departement"]);
+                    $matiere->setAnnee($data["annee"]);
+                    $matiere->setSemestre($data["semestre"]);
+                    $matiere->setModule($data["module"]);
+                    $matiere->setName($data["name"]);
+                    $matiere->setIntroduction($data["introduction"]);
+                    $matiere->setContenu($data["contenu"]);
+                    $matiere->setPrerequis($data["prerequis"]);
+                }
+                if ($session->get('role')=="Responsable Annee" or $session->get('role')=="Responsable Option" ){
+                    if ($session->get('departement')!=$data["departement"]){
+                        return $this->render('main/matiere/create.html.twig',
+                        ['form'=>$form->createView(),
+                        'reponse'=> 'departement invalide, droit insuffisant ',
+                        ]);
+                    }
+                    if ($session->get('annee')!=$data["annee"]){
+                        return $this->render('main/matiere/create.html.twig',
+                        ['form'=>$form->createView(),
+                        'reponse'=> 'annee invalide, droit insuffisant',
+                        ]);
+                    }
+                    $matiere->setDepartement($data["departement"]);
+                    $matiere->setAnnee($data["annee"]);
+                    $matiere->setSemestre($data["semestre"]);
+                    $matiere->setModule($data["module"]);
+                    $matiere->setName($data["name"]);
+                    $matiere->setIntroduction($data["introduction"]);
+                    $matiere->setContenu($data["contenu"]);
+                    $matiere->setPrerequis($data["prerequis"]);
+                }
+                
+                if ($session->get('role')=="Enseignant"){
+                    if ($departement!=$data["departement"] or $semestre!=$data["semestre"] or $annee!=$data["annee"] or $module!=$data["module"] ){
+                        return $this->render('main/matiere/create.html.twig',
+                        ['form'=>$form->createView(),
+                        'reponse'=> 'droit insuffisant ',
+                        ]);
+                    }
+                    $matiere->setDepartement($data["departement"]);
+                    $matiere->setAnnee($data["annee"]);
+                    $matiere->setSemestre($data["semestre"]);
+                    $matiere->setModule($data["module"]);
+                    $matiere->setName($data["name"]);
+                    $matiere->setIntroduction($data["introduction"]);
+                    $matiere->setContenu($data["contenu"]);
+                    $matiere->setPrerequis($data["prerequis"]);
+                }
+                
+                $em->persist($matiere);
+                $em->flush();
+                return $this->redirect($this->generateUrl('matiere', ['annee'=>$data["annee"],'semestre'=>$data["semestre"],'module'=>$data["module"],'departement'=>$data["departement"]]));
+            }else{
+                return $this->render('main/matiere/create.html.twig',
+                ['form'=>$form->createView(),
+                'reponse'=>'veuillez vous connectez'
+            ]);
+            }
+            
+        }
+        return $this->render('main/matiere/create.html.twig',
         ['form'=>$form->createView(),
+        'reponse'=>''
             ]);
     }
 
@@ -200,30 +251,75 @@ class AnneeController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
             $data=$form->getData();
+            $session=new Session;
             //admin
-            $matiere->setName($data["name"]);
-            $matiere->setAnnee($data["annee"]);
-            $matiere->setDepartement($data["departement"]);
-            //responsableAnnee(tout dans ! condition departement annee)
-            //responsableOption(tout dans ! condition departement annee=option;)
-            $matiere->setSemestre($data["semestre"]);
-            $matiere->setModule($data["module"]);
-            //enseignant{
-            $matiere->setIntroduction($data["introduction"]);
-            $matiere->setContenu($data["contenu"]);
-            $matiere->setPrerequis($data["prerequis"]);
+            if($session->has('role')){
+                if($session->get('role')=="Administrateur"){
+                    $matiere->setName($data["name"]);
+                    $matiere->setAnnee($data["annee"]);
+                    $matiere->setDepartement($data["departement"]);
+                    //responsableAnnee(tout dans ! condition departement annee)
+                    //responsableOption(tout dans ! condition departement annee=option;)
+                    $matiere->setSemestre($data["semestre"]);
+                    $matiere->setModule($data["module"]);
+                    //enseignant{
+                    $matiere->setIntroduction($data["introduction"]);
+                    $matiere->setContenu($data["contenu"]);
+                    $matiere->setPrerequis($data["prerequis"]);
+                }
+                if ($session->get('role')=="Responsable Annee" or $session->get('role')=="Responsable Option" ){
+                    if ($session->get('departement')!=$data["departement"]){
+                        return $this->render('main/matiere/create.html.twig',
+                        ['form'=>$form->createView(),
+                        'reponse'=> 'departement invalide, droit insuffisant ',
+                        ]);
+                    }
+                    if ($session->get('annee')!=$data["annee"]){
+                        return $this->render('main/matiere/create.html.twig',
+                        ['form'=>$form->createView(),
+                        'reponse'=> 'annee invalide, droit insuffisant',
+                        ]);
+                    }
+                    $matiere->setDepartement($data["departement"]);
+                    $matiere->setAnnee($data["annee"]);
+                    $matiere->setSemestre($data["semestre"]);
+                    $matiere->setModule($data["module"]);
+                    $matiere->setName($data["name"]);
+                    $matiere->setIntroduction($data["introduction"]);
+                    $matiere->setContenu($data["contenu"]);
+                    $matiere->setPrerequis($data["prerequis"]);
+                }
+                
+                if ($session->get('role')=="Enseignant"){
+                    if ($departement!=$data["departement"] or $semestre!=$data["semestre"] or $annee!=$data["annee"] or $module!=$data["module"] ){
+                        return $this->render('main/matiere/create.html.twig',
+                        ['form'=>$form->createView(),
+                        'reponse'=> 'droit insuffisant ',
+                        ]);
+                    }
+                    $matiere->setDepartement($data["departement"]);
+                    $matiere->setAnnee($data["annee"]);
+                    $matiere->setSemestre($data["semestre"]);
+                    $matiere->setModule($data["module"]);
+                    $matiere->setName($data["name"]);
+                    $matiere->setIntroduction($data["introduction"]);
+                    $matiere->setContenu($data["contenu"]);
+                    $matiere->setPrerequis($data["prerequis"]);
+                }
+
+            }
             $em->persist($matiere);
             $em->flush();
             return $this->redirect($this->generateUrl('matiere', ['annee'=>$data["annee"],'semestre'=>$data["semestre"],'module'=>$data["module"],'departement'=>$data["departement"]]));
         }
-
         return $this->render('main/matiere/edit.html.twig',
             ['form'=>$form->createView(),
                 'matiere'=>$matiere,
                 'annee'=>$annee,
                 'semestre'=>$semestre,
                 'module'=>$module,
-                'departement'=>$departement
+                'departement'=>$departement,
+                'reponse'=>''
                 ]);
     }
     /**

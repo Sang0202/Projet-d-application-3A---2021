@@ -39,6 +39,8 @@ class ConnectionController extends AbstractController
             $session=new Session;
             $session->set('Username',$data['username']);
             $session->set('role',$User['0']->getRole());
+            $session->set('departement',$User['0']->getDepartement());
+            $session->set('annee',$User['0']->getAnnee());
             
             return $this->render('accueil/index.html.twig', [  
                 'controller_name' => 'AccueilController',         

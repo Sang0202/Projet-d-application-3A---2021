@@ -15,6 +15,13 @@ class AccueilController extends AbstractController
     public function index(): Response
     {
         $session=new Session;
+        if($session->has('role')){
+            return $this->render('accueil/index.html.twig', [
+                'controller_name' => 'AccueilController',
+                'Username'=>$session->get('Username'),
+                'role'=>$session->get('role')
+            ]);
+        }
         return $this->render('accueil/index.html.twig', [
             'controller_name' => 'AccueilController',
             'Username'=>'',
