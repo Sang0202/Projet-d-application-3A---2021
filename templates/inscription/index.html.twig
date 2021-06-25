@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello InscriptionController!{% endblock %}
+{% block title %}Hello Admin!{% endblock %}
 
 {% block body %}
 <style>
@@ -9,7 +9,7 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>liste Inscrit</h1>
+    <h1>liste User</h1>
     <a href="{{path('app_inscription_create')}}"> s'inscrire </a><br />
     <table id=table>
         <thead>
@@ -17,6 +17,9 @@
         <th>Username</th>
         <th>Email</th>
         <th>Role</th>
+        <th>Departement</th>
+        <th>Annee</th>
+        <th>IdEnseignant</th>
         </tr>
         </thead>
         <tbody>
@@ -25,8 +28,46 @@
     <td>{{user.getUsername}} </td>
     <td>{{user.getEmail}} </td>
     <td>{{user.getRole}} </td>
+    <td>{{user.getDepartement}} </td>
+    <td>{{user.getAnnee}} </td>
+    <td>{{user.getIdEnseignant}} </td>
     <td>
         <a href="{{path('app_inscription_edit',{'id':user.id})}}"> modifier </a>
+    </td>
+    </tr>
+    {% else %}
+    <tr> <td> no record found</td></tr>
+    {%endfor%}
+    <tbody>
+    </table>
+    
+    <h1>liste Demande d'Inscrit</h1>
+
+    <table id=table>
+        <thead>
+        <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Departement</th>
+        <th>Annee</th>
+        <th>IdEnseignant</th>
+        </tr>
+        </thead>
+        <tbody>
+    {%for inscrit in inscrits %}
+    <tr>
+    <td>{{inscrit.getUsername}} </td>
+    <td>{{inscrit.getEmail}} </td>
+    <td>{{inscrit.getRole}} </td>
+    <td>{{inscrit.getDepartement}} </td>
+    <td>{{inscrit.getAnnee}} </td>
+    <td>{{inscrit.getIdEnseignant}} </td>
+    <td>
+        {{ include('inscription/inscrit_valider.html.twig') }}
+    </td>
+    <td>
+        {{ include('inscription/inscrit_delete.html.twig') }}
     </td>
     </tr>
     {% else %}
