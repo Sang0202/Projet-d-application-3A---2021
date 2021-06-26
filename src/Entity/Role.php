@@ -25,19 +25,13 @@ class Role
     private $nom_role;
 
     /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="idrole")
+     * @ORM\ManyToMany(targetEntity=Departement::class)
      */
-    private $users;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=departement::class, inversedBy="roles")
-     */
-    private $departement;
+    private $Departement;
 
     public function __construct()
     {
-        $this->users = new ArrayCollection();
-        $this->departement = new ArrayCollection();
+        $this->Departement = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -58,55 +52,25 @@ class Role
     }
 
     /**
-     * @return Collection|User[]
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    public function addUser(User $user): self
-    {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-            $user->setIdrole($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): self
-    {
-        if ($this->users->removeElement($user)) {
-            // set the owning side to null (unless already changed)
-            if ($user->getIdrole() === $this) {
-                $user->setIdrole(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|departement[]
+     * @return Collection|Departement[]
      */
     public function getDepartement(): Collection
     {
-        return $this->departement;
+        return $this->Departement;
     }
 
-    public function addDepartement(departement $departement): self
+    public function addDepartement(Departement $departement): self
     {
-        if (!$this->departement->contains($departement)) {
-            $this->departement[] = $departement;
+        if (!$this->Departement->contains($departement)) {
+            $this->Departement[] = $departement;
         }
 
         return $this;
     }
 
-    public function removeDepartement(departement $departement): self
+    public function removeDepartement(Departement $departement): self
     {
-        $this->departement->removeElement($departement);
+        $this->Departement->removeElement($departement);
 
         return $this;
     }

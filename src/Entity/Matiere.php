@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\MatiereRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -40,14 +38,10 @@ class Matiere
     private $contenu_mat;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="Matiere")
+     * @ORM\ManyToOne(targetEntity=Module::class)
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $users;
-
-    public function __construct()
-    {
-        $this->users = new ArrayCollection();
-    }
+    private $Module;
 
     public function getId(): ?int
     {
@@ -71,7 +65,7 @@ class Matiere
         return $this->objectif_mat;
     }
 
-    public function setObjectifMat(string $objectif_mat): self
+    public function setObjectifMat(?string $objectif_mat): self
     {
         $this->objectif_mat = $objectif_mat;
 
@@ -102,29 +96,14 @@ class Matiere
         return $this;
     }
 
-    /**
-     * @return Collection|User[]
-     */
-    public function getUsers(): Collection
+    public function getModule(): ?Module
     {
-        return $this->users;
+        return $this->Module;
     }
 
-    public function addUser(User $user): self
+    public function setModule(?Module $Module): self
     {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-            $user->addMatiere($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): self
-    {
-        if ($this->users->removeElement($user)) {
-            $user->removeMatiere($this);
-        }
+        $this->Module = $Module;
 
         return $this;
     }

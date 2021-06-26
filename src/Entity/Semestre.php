@@ -22,6 +22,12 @@ class Semestre
      */
     private $num_sem;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Annee::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $Annee;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -35,6 +41,18 @@ class Semestre
     public function setNumSem(int $num_sem): self
     {
         $this->num_sem = $num_sem;
+
+        return $this;
+    }
+
+    public function getAnnee(): ?Annee
+    {
+        return $this->Annee;
+    }
+
+    public function setAnnee(?Annee $Annee): self
+    {
+        $this->Annee = $Annee;
 
         return $this;
     }

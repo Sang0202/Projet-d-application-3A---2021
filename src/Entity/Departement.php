@@ -25,18 +25,12 @@ class Departement
     private $nom_dep;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Role::class, mappedBy="departement")
-     */
-    private $roles;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=Annee::class, inversedBy="departements")
+     * @ORM\ManyToMany(targetEntity=Annee::class)
      */
     private $Annee;
 
     public function __construct()
     {
-        $this->roles = new ArrayCollection();
         $this->Annee = new ArrayCollection();
     }
 
@@ -53,33 +47,6 @@ class Departement
     public function setNomDep(string $nom_dep): self
     {
         $this->nom_dep = $nom_dep;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Role[]
-     */
-    public function getRoles(): Collection
-    {
-        return $this->roles;
-    }
-
-    public function addRole(Role $role): self
-    {
-        if (!$this->roles->contains($role)) {
-            $this->roles[] = $role;
-            $role->addDepartement($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRole(Role $role): self
-    {
-        if ($this->roles->removeElement($role)) {
-            $role->removeDepartement($this);
-        }
 
         return $this;
     }

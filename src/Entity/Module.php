@@ -25,13 +25,13 @@ class Module
     private $nom_mod;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="User")
+     * @ORM\ManyToMany(targetEntity=Semestre::class)
      */
-    private $users;
+    private $Semestre;
 
     public function __construct()
     {
-        $this->users = new ArrayCollection();
+        $this->Semestre = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -52,28 +52,25 @@ class Module
     }
 
     /**
-     * @return Collection|User[]
+     * @return Collection|Semestre[]
      */
-    public function getUsers(): Collection
+    public function getSemestre(): Collection
     {
-        return $this->users;
+        return $this->Semestre;
     }
 
-    public function addUser(User $user): self
+    public function addSemestre(Semestre $semestre): self
     {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-            $user->addUser($this);
+        if (!$this->Semestre->contains($semestre)) {
+            $this->Semestre[] = $semestre;
         }
 
         return $this;
     }
 
-    public function removeUser(User $user): self
+    public function removeSemestre(Semestre $semestre): self
     {
-        if ($this->users->removeElement($user)) {
-            $user->removeUser($this);
-        }
+        $this->Semestre->removeElement($semestre);
 
         return $this;
     }

@@ -30,7 +30,7 @@ class User
     private $prenom_user;
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $Email_user;
 
@@ -40,42 +40,26 @@ class User
     private $password_user;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Role::class, inversedBy="users")
-     */
-    private $idrole;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=role::class)
+     * @ORM\ManyToOne(targetEntity=Role::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private $Idrole;
+    private $Role;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Module::class, inversedBy="users")
+     * @ORM\ManyToMany(targetEntity=Module::class)
      */
-    private $User;
+    private $Module;
 
     /**
-     * @ORM\ManyToMany(targetEntity=matiere::class, inversedBy="users")
+     * @ORM\ManyToMany(targetEntity=matiere::class)
      */
     private $Matiere;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Departement::class)
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $iduser;
-
     public function __construct()
     {
-        $this->User = new ArrayCollection();
+        $this->Module = new ArrayCollection();
         $this->Matiere = new ArrayCollection();
     }
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-   
 
     public function getId(): ?int
     {
@@ -130,14 +114,14 @@ class User
         return $this;
     }
 
-    public function getIdrole(): ?role
+    public function getRole(): ?Role
     {
-        return $this->Idrole;
+        return $this->Role;
     }
 
-    public function setIdrole(?role $Idrole): self
+    public function setRole(?Role $Role): self
     {
-        $this->Idrole = $Idrole;
+        $this->Role = $Role;
 
         return $this;
     }
@@ -145,23 +129,23 @@ class User
     /**
      * @return Collection|Module[]
      */
-    public function getUser(): Collection
+    public function getModule(): Collection
     {
-        return $this->User;
+        return $this->Module;
     }
 
-    public function addUser(Module $user): self
+    public function addModule(Module $module): self
     {
-        if (!$this->User->contains($user)) {
-            $this->User[] = $user;
+        if (!$this->Module->contains($module)) {
+            $this->Module[] = $module;
         }
 
         return $this;
     }
 
-    public function removeUser(Module $user): self
+    public function removeModule(Module $module): self
     {
-        $this->User->removeElement($user);
+        $this->Module->removeElement($module);
 
         return $this;
     }
@@ -189,24 +173,4 @@ class User
 
         return $this;
     }
-
-    public function getIduser(): ?Departement
-    {
-        return $this->iduser;
-    }
-
-    public function setIduser(?Departement $iduser): self
-    {
-        $this->iduser = $iduser;
-
-        return $this;
-    }
-
-    
-
-   
-
-  
-
-   
 }
