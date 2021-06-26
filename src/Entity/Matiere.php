@@ -3,9 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\MatiereRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-//FIXME:Modifier tous les attributs;
 /**
  * @ORM\Entity(repositoryClass=MatiereRepository::class)
  */
@@ -19,142 +20,111 @@ class Matiere
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255,unique=true)
-     */
-    private $name;
-
-    /**
-     * @ORM\Column(type="string", length=3)
-     */
-    private $annee;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
-    private $departement;
-
-    /**
-     * @ORM\Column(type="string",length=255)
-     */
-    private $semestre;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $module;
-
-    /**
-     * @ORM\Column(type="text",  nullable=true)
-     */
-    private $contenu;
+    private $nom_mat;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $introduction;
+    private $objectif_mat;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $prerequis;
+    private $intro_mat;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $contenu_mat;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="Matiere")
+     */
+    private $users;
+
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getNomMat(): ?string
     {
-        return $this->name;
+        return $this->nom_mat;
     }
 
-    public function setName(string $name): self
+    public function setNomMat(string $nom_mat): self
     {
-        $this->name = $name;
+        $this->nom_mat = $nom_mat;
 
         return $this;
     }
 
-    public function getAnnee(): ?string
+    public function getObjectifMat(): ?string
     {
-        return $this->annee;
+        return $this->objectif_mat;
     }
 
-    public function setAnnee(string $annee): self
+    public function setObjectifMat(string $objectif_mat): self
     {
-        $this->annee = $annee;
+        $this->objectif_mat = $objectif_mat;
 
         return $this;
     }
 
-    public function getDepartement(): ?string
+    public function getIntroMat(): ?string
     {
-        return $this->departement;
+        return $this->intro_mat;
     }
 
-    public function setDepartement(string $departement): self
+    public function setIntroMat(?string $intro_mat): self
     {
-        $this->departement = $departement;
+        $this->intro_mat = $intro_mat;
 
         return $this;
     }
 
-    public function getSemestre(): ?string
+    public function getContenuMat(): ?string
     {
-        return $this->semestre;
+        return $this->contenu_mat;
     }
 
-    public function setSemestre(string $semestre): self
+    public function setContenuMat(?string $contenu_mat): self
     {
-        $this->semestre = $semestre;
+        $this->contenu_mat = $contenu_mat;
 
         return $this;
     }
 
-    public function getModule(): ?string
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
     {
-        return $this->module;
+        return $this->users;
     }
 
-    public function setModule(string $module): self
+    public function addUser(User $user): self
     {
-        $this->module = $module;
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->addMatiere($this);
+        }
 
         return $this;
     }
 
-    public function getContenu(): ?string
+    public function removeUser(User $user): self
     {
-        return $this->contenu;
-    }
-
-    public function setContenu(?string $contenu): self
-    {
-        $this->contenu = $contenu;
-
-        return $this;
-    }
-
-    public function getIntroduction(): ?string
-    {
-        return $this->introduction;
-    }
-
-    public function setIntroduction(?string $introduction): self
-    {
-        $this->introduction = $introduction;
-
-        return $this;
-    }
-
-    public function getPrerequis(): ?string
-    {
-        return $this->prerequis;
-    }
-
-    public function setPrerequis(?string $prerequis): self
-    {
-        $this->prerequis = $prerequis;
+        if ($this->users->removeElement($user)) {
+            $user->removeMatiere($this);
+        }
 
         return $this;
     }

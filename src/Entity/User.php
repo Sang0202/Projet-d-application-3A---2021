@@ -3,9 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-//FIXME:Modifier tous les attributs;
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */
@@ -19,126 +20,193 @@ class User
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="string", length=255)
      */
-    private $Username;
+    private $nom_user;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $Password;
+    private $prenom_user;
+
+    /**
+     * @ORM\Column(type="string", length=255, unique=true)
+     */
+    private $Email_user;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $Email;
+    private $password_user;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Role::class, inversedBy="users")
+     */
+    private $idrole;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=role::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $Idrole;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Module::class, inversedBy="users")
+     */
+    private $User;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=matiere::class, inversedBy="users")
+     */
+    private $Matiere;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Departement::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $iduser;
+
+    public function __construct()
+    {
+        $this->User = new ArrayCollection();
+        $this->Matiere = new ArrayCollection();
+    }
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $role;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $departement;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $annee;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $idEnseignant;
+   
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUsername(): ?string
+    public function getNomUser(): ?string
     {
-        return $this->Username;
+        return $this->nom_user;
     }
 
-    public function setUsername(string $Username): self
+    public function setNomUser(string $nom_user): self
     {
-        $this->Username = $Username;
+        $this->nom_user = $nom_user;
 
         return $this;
     }
 
-    public function getPassword(): ?string
+    public function getPrenomUser(): ?string
     {
-        return $this->Password;
+        return $this->prenom_user;
     }
 
-    public function setPassword(string $Password): self
+    public function setPrenomUser(string $prenom_user): self
     {
-        $this->Password = $Password;
+        $this->prenom_user = $prenom_user;
 
         return $this;
     }
 
-    public function getEmail(): ?string
+    public function getEmailUser(): ?string
     {
-        return $this->Email;
+        return $this->Email_user;
     }
 
-    public function setEmail(string $Email): self
+    public function setEmailUser(string $Email_user): self
     {
-        $this->Email = $Email;
+        $this->Email_user = $Email_user;
 
         return $this;
     }
 
-    public function getRole(): ?string
+    public function getPasswordUser(): ?string
     {
-        return $this->role;
+        return $this->password_user;
     }
 
-    public function setRole(string $role): self
+    public function setPasswordUser(string $password_user): self
     {
-        $this->role = $role;
+        $this->password_user = $password_user;
 
         return $this;
     }
 
-    public function getDepartement(): ?string
+    public function getIdrole(): ?role
     {
-        return $this->departement;
+        return $this->Idrole;
     }
 
-    public function setDepartement(?string $departement): self
+    public function setIdrole(?role $Idrole): self
     {
-        $this->departement = $departement;
+        $this->Idrole = $Idrole;
 
         return $this;
     }
 
-    public function getAnnee(): ?string
+    /**
+     * @return Collection|Module[]
+     */
+    public function getUser(): Collection
     {
-        return $this->annee;
+        return $this->User;
     }
 
-    public function setAnnee(?string $annee): self
+    public function addUser(Module $user): self
     {
-        $this->annee = $annee;
+        if (!$this->User->contains($user)) {
+            $this->User[] = $user;
+        }
 
         return $this;
     }
 
-    public function getIdEnseignant(): ?int
+    public function removeUser(Module $user): self
     {
-        return $this->idEnseignant;
-    }
-
-    public function setIdEnseignant(int $idEnseignant): self
-    {
-        $this->idEnseignant = $idEnseignant;
+        $this->User->removeElement($user);
 
         return $this;
     }
+
+    /**
+     * @return Collection|matiere[]
+     */
+    public function getMatiere(): Collection
+    {
+        return $this->Matiere;
+    }
+
+    public function addMatiere(matiere $matiere): self
+    {
+        if (!$this->Matiere->contains($matiere)) {
+            $this->Matiere[] = $matiere;
+        }
+
+        return $this;
+    }
+
+    public function removeMatiere(matiere $matiere): self
+    {
+        $this->Matiere->removeElement($matiere);
+
+        return $this;
+    }
+
+    public function getIduser(): ?Departement
+    {
+        return $this->iduser;
+    }
+
+    public function setIduser(?Departement $iduser): self
+    {
+        $this->iduser = $iduser;
+
+        return $this;
+    }
+
+    
+
+   
+
+  
+
+   
 }
