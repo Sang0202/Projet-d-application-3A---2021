@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\MatiereRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+//FIXME:Modifier tous les attributs;
 /**
  * @ORM\Entity(repositoryClass=MatiereRepository::class)
  */
