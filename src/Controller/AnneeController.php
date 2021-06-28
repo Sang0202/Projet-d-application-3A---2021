@@ -1,7 +1,11 @@
 <?php
 
 namespace App\Controller;
+
+use App\Entity\Departement;
 use App\Entity\Matiere;
+use App\Entity\Module;
+use App\Entity\Semestre;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,26 +30,30 @@ class AnneeController extends AbstractController
         // $semestre = ['S5', 'S6', 'S7', 'S8', 'S9', 'S10', ]
         // return new Response(sprintf('This is %s du STI',$annee));
 
-        $repo = $em->getRepository(Matiere::class);
+        // $repo_dep = $em->getRepository(Departement::class);
+        $repo_sem = $em->getRepository(Semestre::class);
+        $repo_mod = $em->getRepository(Module::class);
+
         // $matiere = new Matiere;
-        $matieres = $repo->findBy(['annee' => $annee, 'departement' => $departement],['semestre' => 'DESC']);
-        $semestres = [];
-        $new = '';
+        // $departements = $repo_dep->findBy(['nom_dep' => $departement, 'Annee' => $annee]);
+        $semestres = $repo_sem->findBy(['Annee' => $annee],['num_sem' => INSC]);
+        // $new = '';
         $modules = [];
-        if ($matieres){
+        if ($$semestres){
             // find all semestre of this annee +  departement
-            for ($i = 0; $i<count($matieres); $i++){
-                if ($matieres[$i]->getSemestre() != $new) {
-                    $new = $matieres[$i]->getSemestre();
-                    array_push($semestres, $new);
-                }
-            }
+            // for ($i = 0; $i<count($matieres); $i++){
+            //     if ($matieres[$i]->getSemestre() != $new) {
+            //         $new = $matieres[$i]->getSemestre();
+            //         array_push($semestres, $new);
+            //     }
+            // }
+
             // find all modules corresponding to semestre
             for ($i = 0; $i < count($semestres); $i++) {
                 $modulesSem = array();
-                $module = $repo->findBy(['annee' => $annee, 'departement' => $departement,'semestre' => $semestres[$i]]);
+                $module = $repo_mod->findBy(['Semestre' => $semestres[$i]]);
                 for ($j = 0; $j < count($module); $j++) {
-                    array_push($modulesSem, $module[$j]->getModule());
+                    array_push($modulesSem, $module[$j]->getNomMod());
                 }
                 $modules[$semestres[$i]] = $modulesSem;
             }

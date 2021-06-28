@@ -52,14 +52,16 @@ class InscriptionController extends AbstractController
     {
         $form=$this->createFormBuilder()
             ->add('username',TextType::class,['required'=>true])
+            ->add('nom',TextType::class,['required'=>true])
+            ->add('prenom',TextType::class,['required'=>true])
             ->add('password',PasswordType::class)
             ->add('email',EmailType::class)
             ->add('role',ChoiceType::class,[
                 'choices'=>['admin'=>'admin','Responsable Annee'=>'Responsable Annee','Reponsable Module'=>'Responsable Module','enseignant'=>'enseignant']
             ])
-            ->add('departement',TextType::class)
-            ->add('annee_option',TextType::class)
-            ->add('idEnseignant',TextType::class)
+            // ->add('departement',TextType::class)
+            // ->add('annee_option',TextType::class)
+            // ->add('idEnseignant',TextType::class)
             ->add('submit',SubmitType::class, ['label'=>"s'inscrire"])
             ->getForm()
         ;
@@ -69,12 +71,14 @@ class InscriptionController extends AbstractController
             //$em->getRepository(User::class);
             $inscrit=new Inscrit;
             $inscrit->setUsername($data['username']);
-            $inscrit->setPassword($data['password']);
-            $inscrit->setEmail($data['email']);
+            $inscrit->setNomUser($data['nom']);
+            $inscrit->setPrenomUser($data['prenom']);
+            $inscrit->setPasswordUser($data['password']);
+            $inscrit->setEmailUser($data['email']);
             $inscrit->setRole($data['role']);
-            $inscrit->setDepartement($data['departement']);
-            $inscrit->setAnnee($data['annee_option']);
-            $inscrit->setIdEnseignant($data['idEnseignant']);
+            // $inscrit->setDepartement($data['departement']);
+            // $inscrit->setAnnee($data['annee_option']);
+            // $inscrit->setIdEnseignant($data['idEnseignant']);
 
 
             $em->persist($inscrit);
@@ -122,13 +126,24 @@ class InscriptionController extends AbstractController
     public function inscritValider(Request $request,EntityManagerInterface $em,Inscrit $inscrit): Response
     {   
         $User=new User;
-        $User->setUsername($inscrit->getUsername());
-        $User->setPassword($inscrit->getPassword());
-        $User->setEmail($inscrit->getEmail());
-        $User->setDepartement($inscrit->getDepartement());
-        $User->setAnnee($inscrit->getAnnee());
-        $User->setIdEnseignant($inscrit->getIdEnseignant());
+        // $User->setUsername($inscrit->getUsername());
+        // $User->setPassword($inscrit->getPassword());
+        // $User->setEmail($inscrit->getEmail());
+        // $User->setDepartement($inscrit->getDepartement());
+        // $User->setAnnee($inscrit->getAnnee());
+        // $User->setIdEnseignant($inscrit->getIdEnseignant());
+        // $User->setRole($inscrit->getRole());
+
+        $User->setUsername($inscrit->getUsername());        
+        $User->setNomUser($inscrit->getNomUser());
+        $User->setPrenomUser($inscrit->getPrenomUser());
+        $User->setEmailUser($inscrit->getEmailUser());
+        $User->setPasswordUser($inscrit->getPasswordUser());
         $User->setRole($inscrit->getRole());
+        $User->addModule($inscrit->getModule());
+        $User->addMatiere($inscrit->getMatiere());
+        
+
         $em->persist($User);
         $em->remove($inscrit);
         $em->flush();
