@@ -32,7 +32,7 @@ class InscriptionController extends AbstractController
         $repo=$em->getRepository(User::class);
         $repoInscrit=$em->getRepository(Inscrit::class);
         $session=new Session;
-        if($session->get('role')=="admin"){
+        if($session->get('role')=="Administrateur"){
             $User=$repo->findAll();
             $Inscrits=$repoInscrit->findAll();
             return $this->render('inscription/index.html.twig', [

@@ -33,7 +33,7 @@ class ConnectionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()){
             $data=$form->getData();
             $repo=$em->getRepository(User::class);
-            $User=$repo->findBy(['Username'=>$data['username'],'Password'=>$data['password']]);
+            $User=$repo->findBy(['Username'=>$data['username'],'Password'=>hash("md5",$data['password'])]);
             if ($User){
 
             $session=new Session;

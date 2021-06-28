@@ -28,7 +28,7 @@ class AnneeController extends AbstractController
 
         $repo = $em->getRepository(Matiere::class);
         // $matiere = new Matiere;
-        $matieres = $repo->findBy(['annee' => $annee, 'departement' => $departement],['semestre' => 'DESC']);
+        $matieres = $repo->findBy(['annee' => $annee, 'departement' => $departement],['semestre' => 'ASC']);
         $semestres = [];
         $new = '';
         $modules = [];
@@ -43,9 +43,15 @@ class AnneeController extends AbstractController
             // find all modules corresponding to semestre
             for ($i = 0; $i < count($semestres); $i++) {
                 $modulesSem = array();
+                $new_mod='';
                 $module = $repo->findBy(['annee' => $annee, 'departement' => $departement,'semestre' => $semestres[$i]]);
-                for ($j = 0; $j < count($module); $j++) {
-                    array_push($modulesSem, $module[$j]->getModule());
+                if ($module) {
+                    for ($j = 0; $j < count($module); $j++) {
+                        if ($module[$j]->getModule() != $new_mod){
+                            $new_mod = $module[$j]->getModule();
+                            array_push($modulesSem, $module[$j]->getModule());
+                        }
+                    }                    
                 }
                 $modules[$semestres[$i]] = $modulesSem;
             }
@@ -130,12 +136,12 @@ class AnneeController extends AbstractController
      */
     public function delete(Request $request,EntityManagerInterface $em,Matiere $matiere): Response
     {   
-        $session=new Session;
-        if($session->get('role')=="Administrateur"){
             $annee=$matiere->getAnnee();
             $semestre=$matiere->getSemestre();
             $departement=$matiere->getDepartement();
             $module=$matiere->getModule();
+        $session=new Session;
+        if($session->get('role')=="Administrateur"){
             $em->remove($matiere);
             $em->flush();
         return $this->redirect($this->generateUrl('matiere', ['annee'=>$annee,'semestre'=>$semestre,'module'=>$module,'departement'=>$departement] ));

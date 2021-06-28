@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\InscritRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\PasswordHasher;
 //TODO:Ajouter les nouvelles classe;
 //FIXME:Supprimer cette classe;
 /**
@@ -77,7 +78,7 @@ class Inscrit
 
     public function setPassword(string $Password): self
     {
-        $this->Password = $Password;
+        $this->Password = hash("md5",$Password);
 
         return $this;
     }
